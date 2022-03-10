@@ -5,6 +5,7 @@ from flask import (
 )
 
 from werkzeug.security import check_password_hash, generate_password_hash
+from werkzeug.exceptions import abort
 
 from flaskr.db import get_db
 
@@ -85,6 +86,10 @@ def load_logged_in_user():
 def logout():
     session.clear()
     return redirect(url_for('index'))
+
+def get_user_id():
+    id = session.get('user_id')
+    return id
 
 def login_required(view):
     @functools.wraps(view)
