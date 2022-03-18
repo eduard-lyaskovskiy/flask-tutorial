@@ -10,15 +10,21 @@ class UserController:
 
     def index():
         users = User.query.order_by(User.id).all()
+        print(users)
         if len(users) == 0:
             abort(404)
         return jsonify({
             'success': True,
-            'users': users
+            'users': f'{users}'
         })
 
     def login():
         body = request.get_json()
+
+        """
+            TODO 
+            * add flash errors
+        """
         error = None
 
         user_email = body.get('user_email', None)
@@ -45,13 +51,16 @@ class UserController:
             })
 
     def store():
+        """
+            TODO 
+            * check id insert in DB
+        """
         body = request.get_json()
         error = None
-
         name = body.get('name', None)
         user_email = body.get('user_email', None)
         user_pass = body.get('user_pass', None)
-        
+
         if not name:
             error = 'Name is required'
         elif not user_email:
@@ -61,9 +70,15 @@ class UserController:
         else:
             user_pass_hashed = generate_password_hash(user_pass)
 
+        user = {
+            'name' : name,
+            'user_email' : user_email,
+            'user_pass' : user_pass_hashed,
+        }
+        
         if error is None:
             try:
-                user = User(name=name, user_email=user_email, user_pass=user_pass_hashed)
+                user = User(**user)
                 user.create()
                 return jsonify({
                     'success': True,
