@@ -27,10 +27,6 @@ class User(db.Model):
         db.session.delete(self)
         db.session.commit()
 
-    def getPass(self):
-        return self.user_pass 
-
-
     def format(self):
         return {
             'id': self.id,
@@ -43,7 +39,7 @@ class Post(db.Model):
     __tablename__ = 'posts'
 
     id = Column(Integer, primary_key=True)
-    author_id = Column(Integer, ForeignKey('users_id'))
+    author_id = Column(Integer, ForeignKey('users.id'))
     title = Column(String)
     body = Column(String)
     created = Column(TIMESTAMP)
@@ -64,14 +60,11 @@ class Post(db.Model):
         db.session.delete(self)
         db.session.commit()
 
-    def getPass(self):
-        return self.user_pass 
-
-
     def format(self):
         return {
             'id': self.id,
-            'name': self.name,
-            'user_email': self.user_email,
-            'user_pass': self.user_pass,
+            'author_id': self.author_id,
+            'title': self.title,
+            'body': self.body,
+            'created': self.created,
         }
