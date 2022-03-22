@@ -1,16 +1,16 @@
 <!doctype html>
-<title>{% block title %}{% endblock %} - Flaskr</title>
+<title>{% block title %} {{ title }} {% endblock %} - Flask tutorial</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 <nav>
-  <h1><a href="/">Flaskr</a></h1>
-  <div> {{ g }} </div>
+  <h1><a href="/">Flask-tutorial</a></h1>
+  <div> {{ g.foo }} </div>
   <ul>
     {% if g.user %}
-      <li><span>{{ g.user['username'] }}</span>
-      <li><a href="/">Log Out</a>
+      <li><span>{{ g.user['user_email'] }}</span>
+      <li><a href="{{url_for('user_bp.logout')}}">Log Out</a>
     {% else %}
-      <li><a href="/users/register">Register</a>
-      <li><a href="/users/login">Log In</a>
+      <li><a href="{{url_for('user_bp.store')}}">Register</a>
+      <li><a href="{{url_for('user_bp.login')}}">Log In</a>
     {% endif %}
   </ul>
 </nav>
@@ -18,8 +18,12 @@
   <header>
     {% block header %}{% endblock %}
   </header>
-  {% for message in get_flashed_messages() %}
-    <div class="flash">{{ message }}</div>
-  {% endfor %}
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      {% for messages in get_flashed_messages() %}
+        <div class="flash">{{ messages }}</div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
   {% block content %}{% endblock %}
 </section>

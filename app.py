@@ -1,7 +1,8 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, g, session, redirect, url_for
 from flask_migrate import Migrate
+from flask_bootstrap import Bootstrap
 
-from models.models import db
+from models.DbModels import db
 from routes.user_bp import user_bp
 from routes.post_bp import post_bp
 
@@ -13,6 +14,8 @@ migrate = Migrate(app, db)
 
 app.register_blueprint(user_bp, url_prefix='/users')
 app.register_blueprint(post_bp, url_prefix='/')
+Bootstrap(app)
+
 
 # @app.route('/')
 # def index():
