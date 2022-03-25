@@ -3,7 +3,6 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 <nav>
   <h1><a href="/">Flask-tutorial</a></h1>
-  <div> {{ g.foo }} </div>
   <ul>
     {% if g.user %}
       <li><span>{{ g.user['user_email'] }}</span>

@@ -1,3 +1,4 @@
+from sqlite3 import Timestamp
 from sqlalchemy import Column, String, Integer, ForeignKey, TIMESTAMP
 from flask_sqlalchemy import SQLAlchemy
 

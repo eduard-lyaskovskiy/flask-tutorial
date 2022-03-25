@@ -7,16 +7,16 @@
 {% block content %}
     <form action="" method="post"  novalidate>
         {{ form.hidden_tag() }}
-            {{ form.user_email.label }}
-            {{ form.user_email(size=32) }}
-            {% for error in form.user_email.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-            {{ form.user_pass.label }}
-            {{ form.user_pass(size=32) }}
-            {% for error in form.user_pass.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
+        {{ form.user_email.label }}
+        {{ form.user_email(size=60) }}
+        {% for error in form.user_email.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+        {{ form.user_pass.label }}
+        {{ form.user_pass(size=32) }}
+        {% for error in form.user_pass.errors %}
+        <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
         <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
         <p>{{ form.submit() }}</p>
     </form>

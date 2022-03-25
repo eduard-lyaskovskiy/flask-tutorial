@@ -1,10 +1,10 @@
 import sqlalchemy
 import functools
-# from routes.user_bp import user_bp
-from flask import Blueprint, render_template, redirect, url_for, request, abort, jsonify, flash, session, g
+
+from flask import Blueprint, render_template, redirect, url_for, request, abort, flash, session, g
 
 from models.DbModels import User
-from models.FormModel import LoginForm
+from models.FormModel import LoginForm, RegisterForm
 
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -36,7 +36,7 @@ def login():
                 return redirect('/')
         flash(error)
 
-    return render_template('auth/login.html.j2', form=form)
+    return render_template('auth/login.html.j2', form=form, title='Login')
 
 @user_bp.before_app_request
 def load_logged_in_user():
@@ -49,16 +49,12 @@ def load_logged_in_user():
         g.user = User.query.filter(User.id == user_id).one_or_none().format()
 
 def store():
-    """
-        TODO 
-        * check id insert in DB
-    """
+    form = RegisterForm()
     if request.method == 'POST':
-        body = request.get_json()
         error = None
-        name = body.get('name', None)
-        user_email = body.get('user_email', None)
-        user_pass = body.get('user_pass', None)
+        name = request.form['name']
+        user_email = request.form['user_email']
+        user_pass = request.form['user_pass']
 
         if not name:
             error = 'Name is required'
@@ -69,7 +65,7 @@ def store():
         else:
             user_pass_hashed = generate_password_hash(user_pass)
 
-        user = {
+        user_data = {
             'name' : name,
             'user_email' : user_email,
             'user_pass' : user_pass_hashed,
@@ -77,39 +73,27 @@ def store():
         
         if error is None:
             try:
-                user = User(**user)
+                user = User(**user_data)
                 user.create()
-                return redirect(url_for('self.login'))
+                return redirect(url_for('user_bp.login'))
             except sqlalchemy.exc.IntegrityError:
-                error = f'User {user_email}  already exist!'
+                error = f'User {user_email} already exist!'
             except:
                 abort(422)
-        else:
-            return flash(error, 'error')
+        
+        flash(error)
 
-        flash(error, 'error')
-
-    return render_template('auth/register.html.j2')
+    return render_template('auth/register.html.j2', title='Register', form=form)
 
 def login_required(view):
     @functools.wraps(view)
     def wrapped_view(**kwargs):
         if g.user is None:
-            return redirect(url_for("self.index"))
+            return redirect(url_for("post_bp.index"))
 
         return view(**kwargs)
 
     return wrapped_view
-
-
-def show(user_id):
-    return f'{user_id}'
-
-def update(self, *args, **kwargs):
-    pass
-
-def destroy(self, *args, **kwargs):
-    pass
 
 def logout():
     session.clear()
