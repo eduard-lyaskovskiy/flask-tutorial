@@ -1,16 +1,17 @@
-from sqlite3 import Timestamp
+from datetime import datetime
 from sqlalchemy import Column, String, Integer, ForeignKey, TIMESTAMP
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
 class User(db.Model):  
-    __tablename__ = 'users'
+    __tablename__: str = 'users'
 
-    id = Column(Integer, primary_key=True)
-    name = Column(String)
-    user_email = Column(String, unique=True)
-    user_pass = Column(String)
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String)
+    user_email = db.Column(db.String, unique=True)
+    user_pass = db.Column(db.String)
+    posts = db.relationship('Post', backref='users', lazy='dynamic')
 
     def __init__(self, **kwargs):
         self.name = kwargs['name']
@@ -36,14 +37,14 @@ class User(db.Model):
             'user_pass': self.user_pass,
         }
 
-class Post(db.Model):  
-    __tablename__ = 'posts'
+class Post(db.Model):
+    __tablename__: str = 'posts'
 
-    id = Column(Integer, primary_key=True)
-    author_id = Column(Integer, ForeignKey('users.id'))
-    title = Column(String)
-    body = Column(String)
-    created = Column(TIMESTAMP)
+    id = db.Column(db.Integer, primary_key=True)
+    author_id = db.Column(db.Integer, ForeignKey('users.id'))
+    title = db.Column(db.String)
+    body = db.Column(db.String)
+    created = db.Column(db.TIMESTAMP, default=datetime.now())
 
     def __init__(self, **kwargs):
         self.title = kwargs['title']
@@ -53,7 +54,7 @@ class Post(db.Model):
     def create(self):
         db.session.add(self)
         db.session.commit()
-    
+
     def update(self):
         db.session.commit()
 
@@ -69,3 +70,9 @@ class Post(db.Model):
             'body': self.body,
             'created': self.created,
         }
+    
+    def _get_posts():
+        return db.engine.execute('''
+        SELECT p.id, title, body, created, author_id, name
+        FROM posts p JOIN users u ON p.author_id = u.id
+        ORDER BY created DESC''')

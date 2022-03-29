@@ -16,11 +16,6 @@ app.register_blueprint(user_bp, url_prefix='/users')
 app.register_blueprint(post_bp, url_prefix='/')
 Bootstrap(app)
 
-
-# @app.route('/')
-# def index():
-#     return render_template('base.html.j2')
-    
 if __name__ == '__main__':
     app.debug = True
     app.run()

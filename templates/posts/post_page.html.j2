@@ -1,0 +1,25 @@
+{% extends 'base.html.j2' %}
+
+{% block header %}
+  <h1>{% block title %}Post{% endblock %}</h1>
+  {% if g.user %}
+    <a class="action" href="{{url_for('post_bp.store')}}">New</a>
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+      <article class="post">
+        <header>
+          <div>
+            <h1>{{ post['title'] }}</h1>
+          </div>
+          {% if g.user['id'] == post['author_id'] %}
+            <a class="action" href="#">Edit</a>
+          {% endif %}
+        </header>
+        <p class="body">{{ post['body'] }}</p>
+      </article>
+{% endblock %}
+
+        
+        

@@ -13,7 +13,8 @@ class RegisterForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
     user_email = EmailField('Email', validators=[DataRequired()])
     user_pass = PasswordField('Password', validators=[DataRequired()])
-    submit = SubmitField('Sign In')
+    remember_me = BooleanField('Remember Me')
+    submit = SubmitField('Register')
 
 class PostForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
