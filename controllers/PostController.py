@@ -1,21 +1,11 @@
 from flask import render_template, redirect, url_for, request, abort, g, flash, jsonify
 from models.DbModels import Post
-from flask_sqlalchemy import SQLAlchemy
 from models.FormModel import PostForm
 from controllers.UserController import login_required
-db = SQLAlchemy()
 
 def index():
-    posts = {
-        1 : {
-        'id' : 1,
-        'author_id' : 3,
-        'title' : 'From postcontroller title 1',
-        'body' : 'From postcontroller title 1',
-        'created' : '2022-03-10 12:02:30'
-        }
-    }
-
+    posts = Post.query.all()
+    print(posts)
     return render_template("posts/index.html.j2", posts=posts)
 
 @login_required
@@ -42,8 +32,7 @@ def store():
         try:
             post = Post(**post_data)
             post.create()
-            return jsonify(post.format())
-            # return redirect(url_for('post_bp.index'))
+            return redirect(url_for('post_bp.index'))
         except:
             abort(422)
 

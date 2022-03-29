@@ -46,7 +46,13 @@ def load_logged_in_user():
     if user_id is None:
         g.user = None
     else:
-        g.user = User.query.filter(User.id == user_id).one_or_none().format()
+        g_user = User.query.filter(User.id == user_id).one_or_none().format()
+        #if haven't user in db
+        if g_user:
+            g.user = g_user
+        else:
+            session.clear()
+            return redirect('/')
 
 def store():
     form = RegisterForm()

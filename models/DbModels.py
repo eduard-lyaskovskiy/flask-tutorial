@@ -1,4 +1,4 @@
-from sqlite3 import Timestamp
+from datetime import datetime
 from sqlalchemy import Column, String, Integer, ForeignKey, TIMESTAMP
 from flask_sqlalchemy import SQLAlchemy
 
@@ -43,7 +43,7 @@ class Post(db.Model):
     author_id = Column(Integer, ForeignKey('users.id'))
     title = Column(String)
     body = Column(String)
-    created = Column(TIMESTAMP)
+    created = Column(TIMESTAMP, default=datetime.now())
 
     def __init__(self, **kwargs):
         self.title = kwargs['title']
