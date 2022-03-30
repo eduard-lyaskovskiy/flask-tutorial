@@ -9,3 +9,5 @@ DEBUG = True
 SQLALCHEMY_DATABASE_URI = 'postgresql://leskov:leskov@localhost:5432/flask-tutorial'
 # Turn off the Flask-SQLAlchemy event system and warning
 SQLALCHEMY_TRACK_MODIFICATIONS = False
+#DEV Flask-SQLAlchemy 
+SQLALCHEMY_ECHO = True

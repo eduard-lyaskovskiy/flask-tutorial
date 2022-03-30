@@ -1,11 +1,11 @@
-from flask import render_template, redirect, url_for, request, abort, g, flash, jsonify
-from models.DbModels import Post
+from distutils.command.config import config
+from flask import render_template, redirect, url_for, request, abort, g, flash, jsonify, session
+from models.DbModels import Post, User
 from models.FormModel import PostForm
 from controllers.UserController import login_required
 
 def index():
-    posts = Post.query.all()
-    print(posts)
+    posts = Post._get_posts()
     return render_template("posts/index.html.j2", posts=posts)
 
 @login_required
@@ -39,7 +39,12 @@ def store():
     else:
         return render_template('posts/create.html.j2', form=form)
 
-def update(self, *args, **kwargs):
-    pass
+def update(id):
+    if request.method == 'POST':
+        pass
+    else:
+        post = Post.query.filter(Post.id ==id).one()
+        return render_template('posts/post_page.html.j2', post=post)
+
 def destroy(self, *args, **kwargs):
     pass
