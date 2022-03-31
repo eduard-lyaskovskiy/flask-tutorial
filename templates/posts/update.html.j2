@@ -1,0 +1,23 @@
+{% extends 'base.html.j2' %}
+
+{% block header %}
+  <h1>{% block title %}Edit{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <form action="" method="POST" novalidate>
+		{{ form.hidden_tag() }}
+		{{ form.title.label }}
+		{{ form.title(size=60, value=post['title']) }}
+		{% for error in form.title.errors %}
+		<span style="color: red;">[{{ error }}]</span>
+		{% endfor %}
+		{{ form.body.label }}
+		{{ form.body }}
+		{# <textarea name="body" id="body">{{ request.form['body'] or post['body'] }}</textarea> #}
+		{% for error in form.body.errors %}
+		<span style="color: red;">[{{ error }}]</span>
+		{% endfor %}
+		<p>{{ form.submit() }}</p>
+  </form>
+{% endblock %}

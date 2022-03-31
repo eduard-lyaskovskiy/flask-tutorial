@@ -12,6 +12,8 @@ app.config.from_object('config')
 db.init_app(app)
 migrate = Migrate(app, db)
 
+weather_api_key = app.config.get('WEATHER_API_KEY')
+
 app.register_blueprint(user_bp, url_prefix='/users')
 app.register_blueprint(post_bp, url_prefix='/')
 Bootstrap(app)

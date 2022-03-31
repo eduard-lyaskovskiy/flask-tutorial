@@ -1,6 +1,6 @@
 from datetime import datetime
-from sqlalchemy import Column, String, Integer, ForeignKey, TIMESTAMP
 from flask_sqlalchemy import SQLAlchemy
+from flask import g
 
 db = SQLAlchemy()
 
@@ -41,7 +41,7 @@ class Post(db.Model):
     __tablename__: str = 'posts'
 
     id = db.Column(db.Integer, primary_key=True)
-    author_id = db.Column(db.Integer, ForeignKey('users.id'))
+    author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     title = db.Column(db.String)
     body = db.Column(db.String)
     created = db.Column(db.TIMESTAMP, default=datetime.now())
@@ -71,8 +71,8 @@ class Post(db.Model):
             'created': self.created,
         }
     
-    def _get_posts():
-        return db.engine.execute('''
-        SELECT p.id, title, body, created, author_id, name
-        FROM posts p JOIN users u ON p.author_id = u.id
-        ORDER BY created DESC''')
+    # def _get_posts():
+    #     return db.engine.execute('''
+    #     SELECT p.id, title, body, created, author_id, name
+    #     FROM posts p JOIN users u ON p.author_id = u.id
+    #     ORDER BY created DESC''')
