@@ -14,7 +14,11 @@
             <h1>{{ post['title'] }}</h1>
           </div>
           {% if g.user['id'] == post['author_id'] %}
+<<<<<<< HEAD
             <a class="action" href="{{ url_for('post_bp.update', id=post['id'])}}">Edit</a>
+=======
+            <a class="action" href="#">Edit</a>
+>>>>>>> 9b14c557d655039ec4f87c52d873b3d1038029e3
           {% endif %}
         </header>
         <p class="body">{{ post['body'] }}</p>

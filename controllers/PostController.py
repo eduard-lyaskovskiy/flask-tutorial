@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 from flask import render_template, redirect, url_for, request, abort, g, flash, jsonify, session
 from models.DbModels import Post, User
 from models.FormModel import PostForm, UpdateForm
@@ -11,6 +12,16 @@ def index():
     # .filter(users.id == friendships.friend_id)\
     # .filter(friendships.user_id == userID)\
     # .paginate(page, 1, False)
+=======
+from distutils.command.config import config
+from flask import render_template, redirect, url_for, request, abort, g, flash, jsonify, session
+from models.DbModels import Post, User
+from models.FormModel import PostForm
+from controllers.UserController import login_required
+
+def index():
+    posts = Post._get_posts()
+>>>>>>> 9b14c557d655039ec4f87c52d873b3d1038029e3
     return render_template("posts/index.html.j2", posts=posts)
 
 @login_required
@@ -44,6 +55,7 @@ def store():
         form = PostForm()
         return render_template('posts/create.html.j2', form=form)
 
+<<<<<<< HEAD
 @login_required
 def update(id):
     post = Post.query.filter(Post.id == id).one() 
@@ -77,6 +89,14 @@ def update(id):
 def get_post(id):
     post = Post.query.filter(Post.id == id).one()
     return render_template('posts/post_page.html.j2', post=post)
+=======
+def update(id):
+    if request.method == 'POST':
+        pass
+    else:
+        post = Post.query.filter(Post.id ==id).one()
+        return render_template('posts/post_page.html.j2', post=post)
+>>>>>>> 9b14c557d655039ec4f87c52d873b3d1038029e3
 
 def destroy(self, *args, **kwargs):
     pass
